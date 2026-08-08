@@ -284,7 +284,6 @@ export function AnatomyApp() {
 
       <section className="learning-cards" aria-label={t.learningResources(organ.name)}>
         <article className="curiosity-card contact-card">
-          <span>✿</span>
           <ul className="contact-list">
             <li>
               <a className="contact-row" href={`mailto:${CONTACT.email}`} aria-label={t.contact.email}>

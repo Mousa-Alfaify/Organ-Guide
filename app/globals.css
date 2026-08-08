@@ -501,10 +501,9 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
 .learning-cards h3 { margin: 3px 0 0; font: 500 13px/1.2 var(--font-serif), serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .learning-cards article > button:not(.organ-card-image) { margin-top: auto; width: 100%; min-height: 30px; }
 .curiosity-card { justify-content: center; padding-left: 28px !important; background: linear-gradient(145deg, #eaf7fd, #e6f8ea) !important; }
-.curiosity-card > span { color: var(--cta); font-size: 28px; }
 .curiosity-card p { margin: 5px 0 10px; font: 500 16px/1.4 var(--font-serif), serif; }
 .curiosity-card em { text-transform: none; font-size: 13px; }
-.contact-list { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-direction: column; gap: 9px; width: 100%; }
+.contact-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; width: 100%; }
 .contact-row {
   display: flex;
   align-items: center;
