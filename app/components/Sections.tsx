@@ -154,7 +154,11 @@ export function NotesView({ organs }: { organs: Organ[] }) {
   const { notes, addNote, removeNote } = useNotes();
   const [organId, setOrganId] = useState<OrganId>(organs[0].id);
   const [text, setText] = useState("");
-  const organById = useMemo(() => Object.fromEntries(organs.map((organ) => [organ.id, organ])), [organs]);
+  const organById = useMemo(
+    () => Object.fromEntries(organs.map((organ) => [organ.id, organ])) as Record<OrganId, Organ>,
+    [organs],
+  );
+  const selectedOrgan = organById[organId] ?? organs[0];
   const formatter = useMemo(
     () => new Intl.DateTimeFormat(locale === "ar" ? "ar" : "en", { dateStyle: "medium", timeStyle: "short" }),
     [locale],
@@ -174,11 +178,18 @@ export function NotesView({ organs }: { organs: Organ[] }) {
       </header>
 
       <div className="note-composer">
-        <select value={organId} onChange={(event) => setOrganId(event.target.value as OrganId)} aria-label={t.sections.notes.organLabel}>
-          {organs.map((organ) => (
-            <option key={organ.id} value={organ.id}>{organ.name}</option>
-          ))}
-        </select>
+        {/* Previews the artwork of whichever organ is selected, so the choice
+            is visible before the note is saved rather than only after. */}
+        <div className="note-organ-picker">
+          <span className="note-organ-art" style={{ "--item-accent": selectedOrgan.accent } as React.CSSProperties}>
+            <OrganArt organ={selectedOrgan} asset="organ" alt="" size={44} />
+          </span>
+          <select value={organId} onChange={(event) => setOrganId(event.target.value as OrganId)} aria-label={t.sections.notes.organLabel}>
+            {organs.map((organ) => (
+              <option key={organ.id} value={organ.id}>{organ.name}</option>
+            ))}
+          </select>
+        </div>
         <textarea
           value={text}
           onChange={(event) => setText(event.target.value)}
@@ -198,11 +209,18 @@ export function NotesView({ organs }: { organs: Organ[] }) {
               const organ = organById[note.organId];
               return (
                 <li key={note.id} style={{ "--item-accent": organ?.accent ?? "#8d847c" } as React.CSSProperties}>
-                  <div className="note-meta">
-                    <span className="note-organ-tag">{organ?.name ?? note.organId}</span>
-                    <time>{t.sections.notes.savedOn} {formatter.format(note.createdAt)}</time>
+                  {organ && (
+                    <span className="note-organ-art">
+                      <OrganArt organ={organ} asset="organ" alt={t.organIllustration(organ.name)} size={56} />
+                    </span>
+                  )}
+                  <div className="note-body">
+                    <div className="note-meta">
+                      <span className="note-organ-tag">{organ?.name ?? note.organId}</span>
+                      <time>{t.sections.notes.savedOn} {formatter.format(note.createdAt)}</time>
+                    </div>
+                    <p>{note.text}</p>
                   </div>
-                  <p>{note.text}</p>
                   <button type="button" className="note-delete" onClick={() => removeNote(note.id)} aria-label={t.sections.notes.delete}>
                     <Trash2 size={14} />
                   </button>
