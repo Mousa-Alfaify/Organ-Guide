@@ -91,7 +91,9 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
 }
 
 .brand strong {
-  font: 700 clamp(28px, 2.2vw, 42px)/1 var(--font-serif), serif;
+  /* 900 maps to the Black cut of Thmanyah — a real weight, not a synthesised
+     bold — so the wordmark stays crisp at the larger display size. */
+  font: 900 clamp(33px, 2.7vw, 50px)/1 var(--font-serif), serif;
   letter-spacing: -0.04em;
   white-space: nowrap;
   background: linear-gradient(135deg, var(--primary-dark), var(--cta));
