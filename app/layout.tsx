@@ -19,13 +19,6 @@ const thmanyah = localFont({
   ],
 });
 
-const OG_IMAGE = {
-  url: "/og.jpg",
-  width: 1200,
-  height: 675,
-  alt: "An anatomical heart specimen floating above a plinth, beside the Organ Guide / دليل الأعضاء wordmark",
-};
-
 /**
  * Absolute URLs for og:image and friends. Resolved per host so a preview
  * deployment does not advertise another origin's assets:
@@ -55,23 +48,27 @@ export const metadata: Metadata = {
     shortcut: "/favicon.svg",
     apple: { url: "/apple-touch-icon.png", sizes: "180x180" },
   },
+  // No og:image on purpose — the bundled artwork still carried the old
+  // "Anatomy Atelier" branding and cream theme, so link previews render as a
+  // plain title/description card rather than advertising a stale design.
   openGraph: {
     type: "website",
     siteName: "Organ Guide · دليل الأعضاء",
     title: "Organ Guide · دليل الأعضاء — Learn anatomy like an artist",
     description: "Learn anatomy like an artist through immersive, medically detailed 3D specimens, in English and Arabic.",
-    images: [OG_IMAGE],
   },
   twitter: {
-    card: "summary_large_image",
+    card: "summary",
     title: "Organ Guide · دليل الأعضاء — Learn anatomy like an artist",
     description: "Learn anatomy like an artist through immersive, medically detailed 3D specimens, in English and Arabic.",
-    images: [OG_IMAGE],
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f7f0e7",
+  themeColor: "#f5f5f5",
+  // Lets the layout reach under the notch and home indicator; the shell then
+  // pads itself back with env(safe-area-inset-*) so nothing sits under them.
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
