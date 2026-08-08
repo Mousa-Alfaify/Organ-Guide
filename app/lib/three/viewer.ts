@@ -143,18 +143,18 @@ export class AnatomyViewer {
 
   private buildEnvironment() {
     this.scene.add(new THREE.AmbientLight(0xffffff, 0.42));
-    this.scene.add(new THREE.HemisphereLight(0xfff8ee, 0x33252d, 0.72));
+    this.scene.add(new THREE.HemisphereLight(0xffffff, 0x2d3748, 0.72));
 
-    const key = new THREE.DirectionalLight(0xfff3e7, 3.5);
+    const key = new THREE.DirectionalLight(0xfffdfa, 3.5);
     key.position.set(4.8, 6.5, 6.8);
     this.scene.add(key);
     const fill = new THREE.DirectionalLight(0xe6ecff, 1.12);
     fill.position.set(-4.5, 1.2, 5.2);
     this.scene.add(fill);
-    const rim = new THREE.DirectionalLight(0xffb7a5, 1.6);
+    const rim = new THREE.DirectionalLight(0x87ceeb, 1.6);
     rim.position.set(-4, 3.5, -5.5);
     this.scene.add(rim);
-    const warm = new THREE.PointLight(0xff8d70, 0.72, 11, 2);
+    const warm = new THREE.PointLight(0xffa590, 0.55, 11, 2);
     warm.position.set(-3, -1.4, 3.5);
     this.scene.add(warm);
     const glow = new THREE.PointLight(0xee7c6a, 0.5, 8, 2);
@@ -166,7 +166,7 @@ export class AnatomyViewer {
 
     this.plinth = new THREE.Mesh(
       new THREE.CylinderGeometry(2.3, 2.48, 0.34, 56),
-      new THREE.MeshStandardMaterial({ color: 0xead7c1, roughness: 0.78, metalness: 0 }),
+      new THREE.MeshStandardMaterial({ color: 0xe8eef2, roughness: 0.78, metalness: 0 }),
     );
     this.plinth.position.y = PLINTH_Y;
     this.scene.add(this.plinth);
@@ -197,7 +197,7 @@ export class AnatomyViewer {
     this.scene.add(
       new THREE.Points(
         particleGeometry,
-        new THREE.PointsMaterial({ color: 0xe7a18e, size: 0.013, transparent: true, opacity: 0.16 }),
+        new THREE.PointsMaterial({ color: 0x9fd4ea, size: 0.013, transparent: true, opacity: 0.18 }),
       ),
     );
   }
@@ -208,8 +208,8 @@ export class AnatomyViewer {
     const width = 16;
     const height = 32;
     const data = new Uint8Array(width * height * 4);
-    const top = new THREE.Color(0xfff3e4);
-    const bottom = new THREE.Color(0x6b4f45);
+    const top = new THREE.Color(0xf7fbfd);
+    const bottom = new THREE.Color(0x4a5568);
     const mixed = new THREE.Color();
     for (let y = 0; y < height; y += 1) {
       mixed.copy(bottom).lerp(top, Math.pow(1 - y / (height - 1), 0.7));
