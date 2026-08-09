@@ -571,7 +571,10 @@ button.organ-card-image:focus-visible { outline: 2px solid var(--primary-dark); 
 .play-badge { position: absolute; width: 40px; height: 40px; border: 0; border-radius: 50%; background: rgba(255,255,255,.9); color: var(--cta-dark); display: grid; place-items: center; box-shadow: 0 3px 12px rgba(0,0,0,.1); pointer-events: none; }
 /* Same top and bottom gap as an artwork card, so the footer buttons line up. */
 .learning-cards ul { list-style: none; padding: 0; margin: var(--card-gap-top) 0 var(--card-gap-bottom); flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 9px; font: 500 11px var(--font-app), serif; }
-.learning-cards li:before { content: "●"; color: var(--primary); font-size: 8px; margin-right: 7px; vertical-align: middle; }
+/* `:not(.contact-list *)` keeps the bullet on the clinical-conditions list
+   only — the contact rows carry their own icons and were picking up a stray
+   dot on a line of its own above each row. */
+.learning-cards li:not(.contact-list li):before { content: "●"; color: var(--primary); font-size: 8px; margin-right: 7px; vertical-align: middle; }
 /* Sits directly under the header like every other card, rather than being
    pushed down by an auto top margin. */
 .system-visual { overflow: hidden; border-radius: 12px; }
@@ -795,7 +798,7 @@ button.organ-card-image:focus-visible { outline: 2px solid var(--primary-dark); 
 [dir="rtl"] .compare-strip .compare-organ { padding-left: 0; padding-right: 45px; }
 [dir="rtl"] .compare-organ > img, [dir="rtl"] .compare-organ > .art-fallback { left: auto; right: 0; }
 [dir="rtl"] .key-facts dt { direction: rtl; }
-[dir="rtl"] .learning-cards li:before { margin-right: 0; margin-left: 7px; }
+[dir="rtl"] .learning-cards li:not(.contact-list li):before { margin-right: 0; margin-left: 7px; }
 [dir="rtl"] .modal-close { right: auto; left: 13px; }
 [dir="rtl"] .callout-close { right: auto; left: 6px; }
 [dir="rtl"] .curiosity-card { padding-left: 14px !important; padding-right: 28px !important; }
@@ -911,7 +914,20 @@ button.organ-card-image:focus-visible { outline: 2px solid var(--primary-dark); 
   .info-panel { height: auto; margin-top: 10px; display: block; border-radius: 22px; }
   .learning-cards { grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; --art-max: 320px; }
   .learning-cards article { border-radius: 20px; }
-  .curiosity-card { display: none !important; }
+  /* This card was hidden on phones back when it held a decorative quote. It
+     now carries the contact details, so it stays — spanning the full row and
+     leading the section rather than being buried between organ cards. */
+  .curiosity-card {
+    grid-column: 1 / -1;
+    order: -1;
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+    min-height: 0;
+  }
+  /* Same specificity as the global RTL padding rule, so it wins here. */
+  [dir="rtl"] .curiosity-card { padding-left: 18px !important; padding-right: 18px !important; }
+  .contact-list { gap: 4px; }
+  .contact-row { min-height: 44px; font-size: 13px; }
   .viewer-tools { top: auto; bottom: 12px; left: 10px; right: 10px; transform: none; width: auto; height: 61px; flex-direction: row; justify-content: space-around; padding: 4px; border-radius: 15px; }
   .tool-button { width: 51px; height: 51px; }
   .tool-button:nth-last-child(1) { border: 0; border-radius: 12px; }
