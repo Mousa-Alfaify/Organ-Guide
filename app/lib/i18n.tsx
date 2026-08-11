@@ -296,13 +296,14 @@ type I18nContextValue = {
 
 const I18nContext = createContext<I18nContextValue | null>(null);
 
-// Locale starts as English on every load, matching the server-rendered HTML —
-// restoring a saved locale from localStorage before first paint would make
-// the client's initial render diverge from the server's for the entire page
-// (every string on the page is locale-dependent, not just a CSS class), so
-// the switch stays a same-session, explicit choice via the visible toggle.
+// Arabic is the default: the site opens in Arabic and English is the opt-in.
+// This must stay in step with the lang/dir/data-theme on <html> in layout.tsx,
+// which is what the first paint uses. Restoring a saved locale from
+// localStorage before first paint is deliberately avoided — every string on
+// the page is locale-dependent, so the client's initial render would diverge
+// from the server's, and the switch stays an explicit same-session choice.
 export function I18nProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocale] = useState<Locale>("en");
+  const [locale, setLocale] = useState<Locale>("ar");
 
   const t = dictionaries[locale];
   const dir = t.dir;

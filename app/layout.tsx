@@ -20,24 +20,25 @@ const thmanyah = localFont({
 });
 
 /**
- * Absolute URLs for og:image and friends. Resolved per host so a preview
- * deployment does not advertise another origin's assets:
+ * Absolute URLs for canonical links and friends. Resolved per host so a
+ * preview deployment does not advertise another origin's assets:
  *   1. NEXT_PUBLIC_SITE_URL — explicit override, wins everywhere
  *   2. VERCEL_PROJECT_PRODUCTION_URL — the project's stable production domain
- *   3. the original Cloudflare/OpenAI host
+ *   3. the production domain, as a local-development fallback
  */
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ??
   (process.env.VERCEL_PROJECT_PRODUCTION_URL
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : "https://anatomy-atelier.openai.site");
+    : "https://organ-guide.vercel.app");
 
+// Arabic leads the title and description, matching the locale the site opens in.
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Organ Guide · دليل الأعضاء — Learn anatomy like an artist",
+  title: "دليل الأعضاء · Organ Guide — تعلّم علم التشريح كفنان",
   description:
-    "Explore medically detailed 3D organs — heart, brain, lungs, liver, kidneys, eye, intestine, pancreas, and skin — in English and Arabic. استكشف أعضاء الجسم بنماذج ثلاثية الأبعاد تفصيلية باللغتين العربية والإنجليزية.",
-  applicationName: "Organ Guide · دليل الأعضاء",
+    "استكشف أعضاء جسم الإنسان — القلب والدماغ والرئتين والكبد والكليتين والعين والأمعاء والبنكرياس والجلد — بنماذج ثلاثية الأبعاد تفاعلية، بالعربية والإنجليزية. Explore medically detailed 3D organs in Arabic and English.",
+  applicationName: "دليل الأعضاء · Organ Guide",
   keywords: ["anatomy", "3D anatomy", "human body", "medical education", "interactive learning", "organs", "تشريح", "أعضاء الجسم", "تعليم طبي"],
   icons: {
     icon: [
@@ -53,14 +54,16 @@ export const metadata: Metadata = {
   // plain title/description card rather than advertising a stale design.
   openGraph: {
     type: "website",
-    siteName: "Organ Guide · دليل الأعضاء",
-    title: "Organ Guide · دليل الأعضاء — Learn anatomy like an artist",
-    description: "Learn anatomy like an artist through immersive, medically detailed 3D specimens, in English and Arabic.",
+    locale: "ar_SA",
+    alternateLocale: "en_US",
+    siteName: "دليل الأعضاء · Organ Guide",
+    title: "دليل الأعضاء · Organ Guide — تعلّم علم التشريح كفنان",
+    description: "استكشف أعضاء جسم الإنسان بنماذج ثلاثية الأبعاد تفاعلية ومحتوى طبي مفصّل، بالعربية والإنجليزية.",
   },
   twitter: {
     card: "summary",
-    title: "Organ Guide · دليل الأعضاء — Learn anatomy like an artist",
-    description: "Learn anatomy like an artist through immersive, medically detailed 3D specimens, in English and Arabic.",
+    title: "دليل الأعضاء · Organ Guide — تعلّم علم التشريح كفنان",
+    description: "استكشف أعضاء جسم الإنسان بنماذج ثلاثية الأبعاد تفاعلية ومحتوى طبي مفصّل، بالعربية والإنجليزية.",
   },
 };
 
@@ -77,10 +80,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // The stored language preference is restored on the client before first
-    // paint (see initialLocale in lib/i18n.tsx), which can briefly diverge
-    // from this server-rendered default — expected, and safe to suppress.
-    <html lang="en" suppressHydrationWarning>
+    // Arabic is the site's default locale, so the document declares it up
+    // front: the first paint is already RTL with the Arabic wordmark sizing,
+    // with no flash of English before hydration. I18nProvider starts on the
+    // same locale and keeps these attributes in step when the reader
+    // switches. suppressHydrationWarning covers the attribute rewrite.
+    <html lang="ar" dir="rtl" data-theme="ar" suppressHydrationWarning>
       <body className={thmanyah.variable}>
         <I18nProvider>{children}</I18nProvider>
       </body>
